@@ -1,0 +1,12 @@
+Titel:
+
+Themen:
+Graph basierte Algorithmen
+- 2 bis 3 übliche (A*, Dijkstra, BruteForce/TSMP?)
+-- Verständlich/Anschaulich Erklären
+-- Verwendungs Beispiele
+-- Vergleichen
+Sensor basierte Algorithmen / Sonstige Algorithmen (Nach fragen ob noch im Thema)
+- Verschiedene Sensor anordnungen
+-- Verständlich/Anschaulich Erklären
+-- Verwendungs Beispiele
