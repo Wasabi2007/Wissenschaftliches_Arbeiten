@@ -1,0 +1,11 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: vorlage.aux
+The style file: geralpha.bst
+A level-1 auxiliary file: chapters/AnhangA.aux
+A level-1 auxiliary file: chapters/AnhangB.aux
+Database file #1: literatur.bib
+I was expecting a `,' or a `}'---line 339 of file literatur.bib
+ : 
+ : @book{dsc,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+(There was 1 error message)

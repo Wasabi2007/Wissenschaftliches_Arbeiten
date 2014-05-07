@@ -1,0 +1,21 @@
+\select@language {ngerman}
+\select@language {ngerman}
+\contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Problemstellung}{2}{chapter.2}
+\contentsline {chapter}{\numberline {3}Aufgabenstellung und Zielsetzung}{3}{chapter.3}
+\contentsline {chapter}{\numberline {4}\"Ubrige Abschnitte (Kapitel und Abs\"atze)}{4}{chapter.4}
+\contentsline {chapter}{\numberline {5}Latex-Bausteine}{5}{chapter.5}
+\contentsline {section}{\numberline {5.1}Abschnitt}{5}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Unterabschnitt}{5}{subsection.5.1.1}
+\contentsline {section}{\numberline {5.2}Abbildungen und Tabellen}{6}{section.5.2}
+\contentsline {section}{\numberline {5.3}Mathematische Formel}{6}{section.5.3}
+\contentsline {section}{\numberline {5.4}S\"atze, Lemmas und Definitionen}{7}{section.5.4}
+\contentsline {section}{\numberline {5.5}Fu\IeC {\ss }noten}{8}{section.5.5}
+\contentsline {section}{\numberline {5.6}Literaturverweise}{8}{section.5.6}
+\contentsline {chapter}{\numberline {6}Beispiel-Kapitel}{9}{chapter.6}
+\contentsline {section}{\numberline {6.1}Warum existieren unterschiedliche Konsistenzmodelle?}{9}{section.6.1}
+\contentsline {section}{\numberline {6.2}Klassifizierung eines Konsistenzmodells}{10}{section.6.2}
+\contentsline {section}{\numberline {6.3}Linearisierbarkeit (atomic consistency)}{10}{section.6.3}
+\contentsline {chapter}{Literaturverzeichnis}{12}{chapter*.7}
+\contentsline {chapter}{Glossar}{13}{appendix.A}
+\contentsline {chapter}{Erkl\"arung der Kandidatin / des Kandidaten}{14}{appendix.B}
