@@ -9,13 +9,44 @@ Nicht nur in Civilization, wo die Funktionsweise dem Spieler als ein Zentrales S
 Wegen seiner einfachen Implementierung und seines hohen Effizienzgrades hat sich A*(A-Stern) als Geeignetster seiner Art bewährt. Daher wird heute kaum noch auf andere Lösungen zurückgegriffen um entsprechende Probleme zu bewältigen. In so fern wird sich diese Arbeit mit den Eigenschaften und der Umsetzung in Programmen von A* befassen.
 
 \chapter {Dijkstra}
-Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der sowohl für Netwerkrouting eingesetzt wird, als auch für Kartennavigationsgeräte.\footnote{\cite{tanenbaum:CN}} //
+Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der sowohl für Netwerkrouting eingesetzt wird, als auch für Kartennavigationsgeräte.\footnote{\cite{tanenbaum:CN}} \\
 
-D
+\section {Funktionsweise}
+Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzeste Route zu finden:
+\begin{itemize}
+	\item Die Kosten des ersten Knotens betragen 0.
+	\item Sonstige Knotenkosten akkumulieren sich aus den Kosten der Vorgängerknoten.
+	\item Die Unbekannten ausgenommen, hat jeder Knoten ein Vorgänger, der die bisher kürzeste Verbindung zum ersten Knoten darstellt.
+	\item fertig untersuchte Knoten werden ignoriert
+		
+\end{itemize}
+
+ Die allgemeine iterative Vorgehensweise läuft folgendermaßen ab:
+\begin{enumerate}
+	\item Die Knoten werden in 3 Listen sortiert
+	\begin{itemize}
+		\item unbekannte Knoten
+		\item zu untersuchende Knoten
+		\item fertig untersuchte Knoten
+	\end{itemize}
+	\item Am Anfang ist der Startknoten als "zu untersuchend" markiert, alle Anderen sind unbekannt.
+	\item Aus der Liste der zu untersuchenden Knoten wird nun jener erwählt, welcher am wenigsten Kosten verursacht. \item Dieser wird nun in die Liste der fertig untersuchten Knoten verschoben.
+	\begin{itemize}
+		\item War dies der Zielknoten, so hat man als Ergebnis den Weg vom Anfang bis zum Ziel führt.
+		\item Wenn nicht, so werden die unbekannten, direkt verbundenen Knoten in die Liste der zu Untersuchenden gesetzt. Dabei werden die Kosten der Knoten ermittelt.\\ 
+		Es gilt:\\
+		$Weg+Kante= Knotenkosten$
+		\\
+		Falls für den Knoten schon einmal Kosten ermittelt wurden, so wird der niedrigste Betrag übernommen.
+	\end{itemize}
+\end{enumerate}
+Schritte 2 und 3 werden wiederholt bis die Liste der zu Untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf, kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.\\
+Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Knoten.
 \begin{figure} %[hbtp]
+	
 	\centering
-		\includegraphics{images/Dijkstra-Beispiel/0.png}
-	\caption{Bezeichnung der Abbildung}
+		\includegraphics[width=0.25\textwidth]{images/Dijkstra-Beispiel/0.png}
+	\caption{Start}
 	\label{Schritt1}
 \end{figure}
 
