@@ -9,7 +9,7 @@ Nicht nur in Civilization, wo die Funktionsweise dem Spieler als ein Zentrales S
 Wegen seiner einfachen Implementierung und seines hohen Effizienzgrades hat sich A*(A-Stern) als Geeignetster seiner Art bewährt. Daher wird heute kaum noch auf andere Lösungen zurückgegriffen um entsprechende Probleme zu bewältigen. In so fern wird sich diese Arbeit mit den Eigenschaften und der Umsetzung in Programmen von A* befassen.
 
 \chapter {Dijkstra}
-Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der sowohl für Netwerkrouting eingesetzt wird, als auch für Kartennavigationsgeräte.\footnote{\cite{tanenbaum:CN}} \\
+Dijkstra [?d??k?stra]bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der sowohl für Netwerkrouting eingesetzt wird, als auch für Kartennavigationsgeräte.\footnote{\cite{tanenbaum:CN}} \\
 
 \section {Funktionsweise}
 Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzeste Route zu finden:
@@ -265,4 +265,9 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 
 
 \chapter{A*}
+Der Algorithmus von Dijkstra stellte sich als zufriedenstellend für Karten und Netzwerkverkehr heraus. Aber für die Anforderungen, die KI-Entwickler ende der Sechziger Jahre zu bewältigen hatten war er einfach nicht geeignet. Dijkstra ist klar im Vorteil wenn eine Strecke über bekannte Punkte mit konstanten Längen zurück gelegt werden soll. Aber sobald es an ein Raster geht, an dem der -nur theoretisch vorhandene- Abstand der Kacheln immer gleich ist, kann das Verfahren optimiert werden.
+A* ist demnach kein komplett neues Verfahren, sondern nur eine Optimierung des Ursprünglichen Algorithmus hinsichtlich dieser Punkte.
+
+
+ 
 \chapter{D*}
