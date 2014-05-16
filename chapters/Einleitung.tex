@@ -41,14 +41,228 @@ Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzes
 	\end{itemize}
 \end{enumerate}
 Schritte 2 und 3 werden wiederholt bis die Liste der zu Untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf, kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.\\
-Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Knoten.
-\begin{figure} %[hbtp]
-	
+Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Knoten.\\
+
+\subsection{Ein kleines Beispiel}
+
+\newcounter{Schritt}
+\setcounter{Schritt}{0}
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering
-		\includegraphics[width=0.25\textwidth]{images/Dijkstra-Beispiel/0.png}
-	\caption{Start}
-	\label{Schritt1}
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\end{figure}
+\begin{figure}
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\end{figure}
+\begin{figure}
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.24\textwidth} %[hbtp]
+\centering
+		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
+	\caption{Schritt \arabic{Schritt}}
+	\label{Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
 \end{figure}
 
--A*
--D*?
+
+\chapter{A*}
+\chapter{D*}
