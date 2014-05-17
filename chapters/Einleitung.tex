@@ -9,7 +9,7 @@ Nicht nur in Civilization, wo die Funktionsweise dem Spieler als ein Zentrales S
 Wegen seiner einfachen Implementierung und seines hohen Effizienzgrades hat sich A*(A-Stern) als Geeignetster seiner Art bewährt. Daher wird heute kaum noch auf andere Lösungen zurückgegriffen um entsprechende Probleme zu bewältigen. In so fern wird sich diese Arbeit mit den Eigenschaften und der Umsetzung in Programmen von A* befassen.
 
 \chapter {Dijkstra}
-Dijkstra [?d??k?stra]bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der sowohl für Netwerkrouting eingesetzt wird, als auch für Kartennavigationsgeräte.\footnote{\cite{tanenbaum:CN}} \\
+Dijkstra [?d??k?stra]bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der für Netzwerkrouting eingesetzt wird.\footnote{\cite{tanenbaum:CN}} \\
 
 \section {Funktionsweise}
 Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzeste Route zu finden:
@@ -32,10 +32,11 @@ Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzes
 	\item Am Anfang ist der Startknoten als "zu untersuchend" markiert, alle Anderen sind unbekannt.
 	\item Aus der Liste der zu untersuchenden Knoten wird nun jener erwählt, welcher am wenigsten Kosten verursacht. \item Dieser wird nun in die Liste der fertig untersuchten Knoten verschoben.
 	\begin{itemize}
-		\item War dies der Zielknoten, so hat man als Ergebnis den Weg vom Anfang bis zum Ziel führt.
+		\item War dies der Zielknoten, so ergibt sich als Ergebnis der Weg vom Anfang bis zum Ziel.
 		\item Wenn nicht, so werden die unbekannten, direkt verbundenen Knoten in die Liste der zu Untersuchenden gesetzt. Dabei werden die Kosten der Knoten ermittelt.\\ 
 		Es gilt:\\
-		$Weg+Kante= Knotenkosten$
+		$Knotenkosten=Weg+Kante$\\
+		$D(k_{i})=D(k_{i-1})+Kantenkosten$
 		\\
 		Falls für den Knoten schon einmal Kosten ermittelt wurden, so wird der niedrigste Betrag übernommen.
 	\end{itemize}
@@ -265,9 +266,52 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 
 
 \chapter{A*}
-Der Algorithmus von Dijkstra stellte sich als zufriedenstellend für Karten und Netzwerkverkehr heraus. Aber für die Anforderungen, die KI-Entwickler ende der Sechziger Jahre zu bewältigen hatten war er einfach nicht geeignet. Dijkstra ist klar im Vorteil wenn eine Strecke über bekannte Punkte mit konstanten Längen zurück gelegt werden soll. Aber sobald es an ein Raster geht, an dem der -nur theoretisch vorhandene- Abstand der Kacheln immer gleich ist, kann das Verfahren optimiert werden.
-A* ist demnach kein komplett neues Verfahren, sondern nur eine Optimierung des Ursprünglichen Algorithmus hinsichtlich dieser Punkte.
+Der Algorithmus von Dijkstra stellte sich als zufriedenstellend für den Netzwerkverkehr heraus. Aber für die Anforderungen, die KI-Entwickler ende der Sechziger Jahre zu bewältigen hatten war er einfach nicht geeignet. Dijkstra ist klar im Vorteil wenn eine Strecke über bekannte Punkte mit konstanten Längen zurück gelegt werden soll. Aber sobald es möglich ist die Kosten vom aktuelle Knoten zum Ziel zu schätzen, kann die Wegfindung optimiert werden.
+A* ist demnach kein komplett neues Verfahren, sondern nur eine Optimierung des ursprünglichen Algorithmus hinsichtlich dieser Punkte. Das wird besonders deutlich, wenn A* gegen eine Wand läuft. Hier gleicht sich der Schätzwert, für neue Knoten, welche vermeidlich nahe am Ziel sind mit den ehemals höheren Kosten der Knoten am Startpunkt an. So wird, je nach Implementierung, ein Feld nach dem anderen abgeklappert bis der Pfad nicht mehr blockiert ist.
+Eine Besonderheit von A* ist, dass er optimal effizient eine Lösung findet - diese ist gleichzeitig der günstigste Weg. Er ist, unter den selben Ausgangsbedingungen (Heuristik), in seiner Geschwindigkeit kombiniert mit jener Genauigkeit nicht mehr zu übertrumpfen.\footnote{ http://de.wikipedia.org/w/index.php?title=A*-Algorithmus\&oldid=129862855}\\
+Dazu kommt, dass die Heuristik dahingehend modifizierbar ist, A* schneller zum Ziel finden zu lassen. Dieser Weg wird voraussichtlich nicht der optimale sein. So wird Rechenzeit auf Kosten der Genauigkeit gewonnen.
+
+\section{Funktionsweise}
+Vor jedem Schritt werden die anliegenden Knoten überprüft. Der Computer berechnet zu erst, wie bei Dijkstra, die bisher zurück gelegten Kosten. Zusätzlich kommt nun hinzu, dass die Punkte noch einen Schätzwert erhalten, wie weit sie vom Ziel entfernt sind.\\
+Zur Formel kommt dies nun als der Faktor $h(k)$.\\
+Es gilt nun:\\
+$F(k)=D(k)+h(k)$
+
+
 
 
  
-\chapter{D*}
+\chapter{Vergleich der beiden Algorithmen}
+\begin{table}
+%Algorithmus & Worst Case & Best Case &    hoi\\
+%Dijkstra & blabla & Honigkuchen &    oi\\
+% A*	&	&	& ahoi \\
+\end{table}
+\begin{table} %[hbtp]
+	%\centering
+	\large
+		\begin{tabular}{c| c|c| c}
+		\textbf{Algorithmen} & \textbf{Worst Case} & \textbf{Best Case}  Kuchen\\
+		\hline
+		Djikstra & blabla & Honigkuchen  hosenbein \\
+		\hline
+		A* & nudelstrudel & bananenpfannenkuchen  bier \\
+			
+		\end{tabular}
+	\caption{Bezeichnung der Tabelle}
+	\label{t1}
+\end{table}
+
+\chapter{Implementierung in Computerspielen}
+In der Praxis werden in heutigen Spielen Mobs nicht mehr einfach über eine 2-Dimensionale Oberfläche, mit n Knoten, ans Ziel gelotst. In 3D Spielen ist nicht nur die Frage wie optimal, sondern auch wie natürlich sich die Figur zum Zielpunkt bewegt.
+%In der dritten Dimension müssen, sich scheinbar überlappende Wege, (z.B. unterschiedliche Stockwerke) auf eine zweidimensionale Ebene herunter gebrochen werden.\\
+
+\section{Navigation Meshes}
+Hier handelt es sich um Polygone, welche bei Erstellung der Karte auf den Boden gelegt werden um die begehbare Zone auszuweisen. Gewissermaßen werden aus den Verbindungslinien der Knoten -bei Dijkstra- breite Straßen. So wird der ehemalige Seiltänzer, der sich auf einer festen Linie von A nach B bewegt ein Fahrradfahrer mit Spielraum auf der Strecke.\\
+Zusätzlich kommt hinzu, dass jedes Dreieck der Polygone als Knoten verwertet werden kann. Dies wird generell nur ausgenutzt, wenn sich neue Ruten erschließen und neue Wegfinde-Entscheidungen zu treffen sind. Daraus erschließt sich auch die Dynamik dieser Felder.\\
+Es muss beachtet werden, diesen Meshes eine weitere Dimension zu verpassen, soll sich der Mob komplett in den Raum bewegen. Also für den Fall er taucht oder fliegt.
+\section{Drahtgitter}
+Ein Drahtgitter ist wie das Blatt eines Rechenblockes, welches über eine Karte gelegt wird. Diese Technik findet heute noch bei Strategietiteln Verwendung und war in den Neunzigern quasi Standard für alle Spiele aus der Vogelperspektive.
+Den Feldern können Eigenschaften zugewiesen werden. So kann man bestimmen ob sich die Figur vor, hinter oder gar nicht über ein Objekt bewegen kann.\\
+Je nach Bedarf können so auch Felder mit höheren oder niedrigeren Bewegungskosten, Schaden oder Heilung und anderen Boni und Mali versehen werden.
+Diese können in A*
