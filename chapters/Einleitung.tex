@@ -9,16 +9,15 @@ Nicht nur in Civilization, wo die Funktionsweise dem Spieler als ein Zentrales S
 Wegen seiner einfachen Implementierung und seines hohen Effizienzgrades hat sich A*(A-Stern) als Geeignetster seiner Art bewährt. Daher wird heute kaum noch auf andere Lösungen zurückgegriffen um entsprechende Probleme zu bewältigen. In so fern wird sich diese Arbeit mit den Eigenschaften und der Umsetzung in Programmen von A* befassen.
 
 \chapter {Dijkstra}
-Dijkstra [?d??k?stra]bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der für Netzwerkrouting eingesetzt wird.\footnote{\cite{tanenbaum:CN}} \\
+Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der für Netzwerkrouting eingesetzt wird.\footnote{\cite{tanenbaum:CN}} \\
 
 \section {Funktionsweise}
-Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzeste Route zu finden:
+Die Knoten im Dijkstra-Algorithmus haben folgende Eigenschaften:
 \begin{itemize}
 	\item Die Kosten des ersten Knotens betragen 0.
 	\item Sonstige Knotenkosten akkumulieren sich aus den Kosten der Vorgängerknoten.
 	\item Die Unbekannten ausgenommen, hat jeder Knoten ein Vorgänger, der die bisher kürzeste Verbindung zum ersten Knoten darstellt.
 	\item fertig untersuchte Knoten werden ignoriert
-		
 \end{itemize}
 
  Die allgemeine iterative Vorgehensweise läuft folgendermaßen ab:
@@ -29,11 +28,11 @@ Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzes
 		\item zu untersuchende Knoten
 		\item fertig untersuchte Knoten
 	\end{itemize}
-	\item Am Anfang ist der Startknoten als "zu untersuchend" markiert, alle Anderen sind unbekannt.
-	\item Aus der Liste der zu untersuchenden Knoten wird nun jener erwählt, welcher am wenigsten Kosten verursacht. \item Dieser wird nun in die Liste der fertig untersuchten Knoten verschoben.
+	\item Am Anfang ist der Startknoten als "'zu untersuchend"' markiert, alle Anderen sind unbekannt. \ref{Schritt 0}
+	\item Aus der Liste der zu untersuchenden Knoten wird nun jener erwählt, welcher am wenigsten Kosten verursacht. \item Dieser wird nun in die Liste der fertig untersuchten Knoten verschoben. \ref{Schritt 7}
 	\begin{itemize}
-		\item War dies der Zielknoten, so ergibt sich als Ergebnis der Weg vom Anfang bis zum Ziel.
-		\item Wenn nicht, so werden die unbekannten, direkt verbundenen Knoten in die Liste der zu Untersuchenden gesetzt. Dabei werden die Kosten der Knoten ermittelt.\\ 
+		\item War dies der Zielknoten, so ergibt sich als Ergebnis der Weg vom Anfang bis zum Ziel. \ref{Schritt 25}
+		\item Wenn nicht, so werden die unbekannten, direkt verbundenen Knoten in die Liste der zu Untersuchenden angefügt. Dabei werden die Kosten der Knoten ermittelt und der Vorgängerknoten gesetzt.(\ref{Schritt 1} - \ref{Schritt 6})\\ 
 		Es gilt:\\
 		$Knotenkosten=Weg+Kante$\\
 		$D(k_{i})=D(k_{i-1})+Kantenkosten$
@@ -41,7 +40,7 @@ Der Dijkstra-Algorithmus bedient sich unterschiedlicher Funktionen um die kürzes
 		Falls für den Knoten schon einmal Kosten ermittelt wurden, so wird der niedrigste Betrag übernommen.
 	\end{itemize}
 \end{enumerate}
-Schritte 2 und 3 werden wiederholt bis die Liste der zu Untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf, kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.\\
+Schritte 3 und 4 werden wiederholt bis die Liste der zu Untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf, kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.(\ref{Schritt 1} - \ref{Schritt 25})\\
 Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Knoten.\\
 
 \subsection{Ein kleines Beispiel}
@@ -51,6 +50,8 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 
 \begin{figure}
 \centering
+\caption{Schritt 0 - 11}
+\label{Schritt 0 - 11}
 \begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
@@ -145,6 +146,8 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 \end{subfigure}
 \end{figure}
 \begin{figure}
+\caption{Schritt 12 - 26}
+\label{Schritt 12 - 26}
 \begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
@@ -206,8 +209,7 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 	\label{Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
 \end{subfigure}
-\end{figure}
-\begin{figure}
+\\
 \begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/Dijkstra-Beispiel/\arabic{Schritt}.png}
@@ -277,7 +279,52 @@ Zur Formel kommt dies nun als der Faktor $h(k)$.\\
 Es gilt nun:\\
 $F(k)=D(k)+h(k)$
 
+\section{Beispiel}
 
+\setcounter{Schritt}{1}
+
+\begin{figure}
+\centering
+\caption{Schritt 0 - 6}
+\label{Schritt 0 - 6}
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
+	\caption{Schritt \arabic{Schritt}}
+	\label{A-Stern-Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
+	\caption{Schritt \arabic{Schritt}}
+	\label{A-Stern-Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
+	\caption{Schritt \arabic{Schritt}}
+	\label{A-Stern-Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
+	\caption{Schritt \arabic{Schritt}}
+	\label{A-Stern-Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
+	\caption{Schritt \arabic{Schritt}}
+	\label{A-Stern-Schritt \arabic{Schritt}}
+	\addtocounter{Schritt}{1}
+\end{subfigure}
+\end{figure}
 
 
  
@@ -290,17 +337,43 @@ $F(k)=D(k)+h(k)$
 \begin{table} %[hbtp]
 	%\centering
 	\large
-		\begin{tabular}{c| c|c| c}
-		\textbf{Algorithmen} & \textbf{Worst Case} & \textbf{Best Case}  Kuchen\\
+		\begin{tabular}{|c| c|c| c| c|}
 		\hline
-		Djikstra & blabla & Honigkuchen  hosenbein \\
+		\textbf{Algorithmen} & \textbf{Worst Case Laufzeit} & \textbf{Best Case Laufzeit} \\
 		\hline
-		A* & nudelstrudel & bananenpfannenkuchen  bier \\
-			
+		Djikstra & $O(|V|^2)$ & $O(1)$   \\
+		\hline
+		A* & $O(|V|^2)$ & $O(1)$  \\
+		\hline
 		\end{tabular}
 	\caption{Bezeichnung der Tabelle}
 	\label{t1}
 \end{table}
+
+\begin{figure}
+\centering
+\label{DvsA}
+\caption{Dikstra Vergleich A*}
+\begin{subfigure}[b]{0.15\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/progress_Path_animation_firstframe.png}
+	\label{Frame1}
+	\caption{Ausganssituation}
+\end{subfigure}
+\\
+\begin{subfigure}[b]{0.15\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/progress_Dijkstras_animation_lastframe.png}
+	\label{lastFrameD}
+	\caption{Endsituation Dijkstra}
+\end{subfigure}
+\begin{subfigure}[b]{0.15\textwidth} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{images/progress_Astar_animation_lastframe.png}
+	\label{lastFrameA}
+	\caption{Endsituation A*}
+\end{subfigure}
+\end{figure}
 
 \chapter{Implementierung in Computerspielen}
 In der Praxis werden in heutigen Spielen Mobs nicht mehr einfach über eine 2-Dimensionale Oberfläche, mit n Knoten, ans Ziel gelotst. In 3D Spielen ist nicht nur die Frage wie optimal, sondern auch wie natürlich sich die Figur zum Zielpunkt bewegt.
@@ -310,6 +383,24 @@ In der Praxis werden in heutigen Spielen Mobs nicht mehr einfach über eine 2-Dim
 Hier handelt es sich um Polygone, welche bei Erstellung der Karte auf den Boden gelegt werden um die begehbare Zone auszuweisen. Gewissermaßen werden aus den Verbindungslinien der Knoten -bei Dijkstra- breite Straßen. So wird der ehemalige Seiltänzer, der sich auf einer festen Linie von A nach B bewegt ein Fahrradfahrer mit Spielraum auf der Strecke.\\
 Zusätzlich kommt hinzu, dass jedes Dreieck der Polygone als Knoten verwertet werden kann. Dies wird generell nur ausgenutzt, wenn sich neue Ruten erschließen und neue Wegfinde-Entscheidungen zu treffen sind. Daraus erschließt sich auch die Dynamik dieser Felder.\\
 Es muss beachtet werden, diesen Meshes eine weitere Dimension zu verpassen, soll sich der Mob komplett in den Raum bewegen. Also für den Fall er taucht oder fliegt.
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/Navmeshes-2.png}
+	\label{navmesh}
+	\caption{Navmesh Beispiel aus Unity3D}
+\end{figure}
+
+\section{Off-Meshes links}
+In einigen fällen werden im Leveldesign Schluchten oder Klippen eingesetzt zum Bereiche von einander zu trennen. Sei es jetzt aus Ästhetischen oder Gameplay relevanten gründen. Damit die KI auch diese Lücken überwinden kann, werden Off-Mesh links eingesetzt, die Geometrisch von einander Getrennte Navmeshes mit einander verbindet. %(siehe Abb. \ref{OffMeshesLinks})
+\begin{figure}
+	\centering
+		\includegraphics[width=0.5\textwidth]{images/OffMeshLinks-1.png}
+	\caption{Off-Meshes links Beispiel aus Unity3D}
+	\label{OffMeshesLinks}
+\end{figure}
+
+
 \section{Drahtgitter}
 Ein Drahtgitter ist wie das Blatt eines Rechenblockes, welches über eine Karte gelegt wird. Diese Technik findet heute noch bei Strategietiteln Verwendung und war in den Neunzigern quasi Standard für alle Spiele aus der Vogelperspektive.
 Den Feldern können Eigenschaften zugewiesen werden. So kann man bestimmen ob sich die Figur vor, hinter oder gar nicht über ein Objekt bewegen kann.\\
