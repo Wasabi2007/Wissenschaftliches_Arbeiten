@@ -378,6 +378,10 @@ $F(k)=D(k)+h(k)$
 \chapter{Implementierung in Computerspielen}
 In der Praxis werden in heutigen Spielen Mobs nicht mehr einfach über eine 2-Dimensionale Oberfläche, mit n Knoten, ans Ziel gelotst. In 3D Spielen ist nicht nur die Frage wie optimal, sondern auch wie natürlich sich die Figur zum Zielpunkt bewegt.
 %In der dritten Dimension müssen, sich scheinbar überlappende Wege, (z.B. unterschiedliche Stockwerke) auf eine zweidimensionale Ebene herunter gebrochen werden.\\
+\section{Drahtgitter}
+Ein Drahtgitter (oder auch Grid) ist wie das Blatt eines Rechenblockes, welches über eine Karte gelegt wird. Diese Technik findet heute noch bei Strategietiteln Verwendung und war in den Neunzigern quasi Standard für alle Spiele aus der Vogelperspektive.
+Den Feldern können Eigenschaften zugewiesen werden. So kann man bestimmen ob sich die Figur vor, hinter oder gar nicht über ein Objekt bewegen kann.\\
+Je nach Bedarf können so auch Felder mit höheren oder niedrigeren Bewegungskosten, Schaden oder Heilung und anderen Boni und Mali versehen werden.
 
 \section{Navigation Meshes}
 Hier handelt es sich um Polygone, welche bei Erstellung der Karte auf den Boden gelegt werden um die begehbare Zone auszuweisen. Gewissermaßen werden aus den Verbindungslinien der Knoten -bei Dijkstra- breite Straßen. So wird der ehemalige Seiltänzer, der sich auf einer festen Linie von A nach B bewegt ein Fahrradfahrer mit Spielraum auf der Strecke.\\
@@ -391,8 +395,8 @@ Es muss beachtet werden, diesen Meshes eine weitere Dimension zu verpassen, soll
 	\caption{Navmesh Beispiel aus Unity3D}
 \end{figure}
 
-\section{Off-Meshes links}
-In einigen fällen werden im Leveldesign Schluchten oder Klippen eingesetzt zum Bereiche von einander zu trennen. Sei es jetzt aus Ästhetischen oder Gameplay relevanten gründen. Damit die KI auch diese Lücken überwinden kann, werden Off-Mesh links eingesetzt, die Geometrisch von einander Getrennte Navmeshes mit einander verbindet. %(siehe Abb. \ref{OffMeshesLinks})
+\subsection{Off-Mesh-Links}
+In einigen Fällen werden im Level-Design Schluchten oder Klippen eingesetzt um Bereiche von einander zu trennen. Sei es aus ästhetischen- oder gameplay- relevanten Gründen. Damit die KI auch diese Lücken überwinden kann, werden Off-Mesh-Links eingesetzt, die Geometrisch von einander Getrennte Navmeshes mit einander verbindet. %(siehe Abb. \ref{OffMeshesLinks})
 \begin{figure}
 	\centering
 		\includegraphics[width=0.5\textwidth]{images/OffMeshLinks-1.png}
@@ -400,9 +404,49 @@ In einigen fällen werden im Leveldesign Schluchten oder Klippen eingesetzt zum B
 	\label{OffMeshesLinks}
 \end{figure}
 
+\subsection{Bewegung in Meshes}
+Auf den Mesh-Polygonen können sich die Figuren in unterschiedlicher Weise orientieren. Es kommt darauf an, für die Situation geeignete Knoten auf den Polygonen zu setzen.
+\begin{itemize}
+\item Polygon movement\\
+Die Knoten sitzen im Mittelpunkt der Dreiecke.\\
+Diese Form hat die wenigsten Punkte, bieten dennoch ein natürliches Bewegungsmuster, ohne die CPU zu arg zu belasten.
+\item  Edge movement\\
+Die Knoten sitzen auf den Kanten, die an andere Dreiecke schließen\\
+Meist ist es unnötig durch den Mittelpunkt aller Polygone zu gehen. Dieser Weg braucht mehr CPU, sieht dafür noch etwas realistischer aus.
+\item Vertex movement\\
+Die Knoten sitzen auf allen Eckpunkten\\
+Der schnellste Weg geht meist direkt an einem Objekt vorbei. Mit dieser Mesh-Anordnung nimmt die Figur auch auf jeden Fall diese Route. Aber "'Wandschmußer"' hinterlassen nicht gerade das Bild eines realistischen Spielers.
+\item Hybrid movement\\
+Kombinationen der Oberen\\
+Dies wird wohl die natürlichste Form der Spielerbewegung wiedergeben. Aber dafür gibt es auch immer eine größere Menge an Knoten zu berechnen, als wenn nur eine andere Form implementiert wird.
+\end{itemize}
 
-\section{Drahtgitter}
-Ein Drahtgitter ist wie das Blatt eines Rechenblockes, welches über eine Karte gelegt wird. Diese Technik findet heute noch bei Strategietiteln Verwendung und war in den Neunzigern quasi Standard für alle Spiele aus der Vogelperspektive.
-Den Feldern können Eigenschaften zugewiesen werden. So kann man bestimmen ob sich die Figur vor, hinter oder gar nicht über ein Objekt bewegen kann.\\
-Je nach Bedarf können so auch Felder mit höheren oder niedrigeren Bewegungskosten, Schaden oder Heilung und anderen Boni und Mali versehen werden.
-Diese können in A*
+\subsection{Pfadglättung}
+Egal welche Art von Mesh-Anordnung verwendet wird. Solange die Fortbewegungskosten konstant bleiben, kann man den Weg gerader machen.\\
+So simuliert man zwar nicht NPC Verhalten in einer simulierten Welt, jedoch beispielsweise menschliches Gebaren für simulierte Gegner in Multiplayerspielen.
+Ein Mensch würde, wenn er von A nach B kommen wollte, auf B zielen und nur den "'nach-vorne-Laufen"' Knopf betätigen. Es wäre ihm egal ob er an der Wand entlang schrammt oder sich dabei sonst wie nicht natürlich verhält.\\
+Der benutzte Algorithmus ist dabei denkbar simpel.\\
+Wenn man an Punkt $i$ steht und $i+2$ sichtbar ist, wird $i+1$ gelöscht. Wird dies oft genug wiederholt, besteht der Weg nur noch aus geraden Pfaden und den nötigen Eckpunkten.
+
+
+\section{Spielererfahrung}
+
+Auf keinen Fall sollte es sich für den Spieler so anfühlen, als würde der Computer cheaten, um zu gewinnen. Es lässt sich durch die Mechanik der Programmierung jedoch fast nie vermeiden, dem KI-Gegner einen Vorsprung in Sachen taktischer Informationen zu gewähren. Daher Computer generell nicht "'Betrügen"', im Sinne des Wortes, können, kommt es letztendlich nur darauf an, was der Spieler vom Verhalten des Gegners mit bekommt.  \\
+Eine gute Methode ist Beispielsweise, in einem Spiel die generellen Geländekosten für Felder zu erhöhen, die noch unerforscht sind. Obwohl dies für die KI offenkundig nie der Fall sein wird. So werden die gegnerischen Einheiten bevorzugt über aufgedecktes Gelände geschickt.
+Natürlich sollte dieses Prinzip nicht für Einheiten gelten, welche erforschen sollen.\\
+Am Ende soll es darauf hinaus laufen, dass der Gegner seine Einheiten wie ein menschlicher Spieler bewegt.\\
+Ebenfalls darf der Spieler nicht der Meinung sein, dass seine Einheiten nicht das tut, was er ihnen befiehlt. \\
+Eine sehr gute Methode zu verschleiern, was vor sich geht, ist die Einheit erst einmal in grober Richtung des Ziels aufbrechen und die Wegfindung bei niedrigster Priorität anlaufen zu lassen.
+So wird dem Benutzer automatisch mitgeteilt, dass seine Befehle angekommen sind und die Steuerung funktioniert.
+http://theory.stanford.edu/~amitp/GameProgramming/UserExperience.html
+
+\section{Performance}
+Die Hauptschleife von A* ließt sich durch eine priorisierte Liste, analysiert und vertauscht dort Knoten. Ebenfalls werden die Knoten gespeichert, die schon besucht wurden.\\
+Die Liste verkürzen wäre natürlich die offensichtlichste Lösung um die Prozedur zu vereinfachen. Generell gilt: Wege über Meshes sind einfacher zu berechnen als über ein Grid, weil sie in der Regel weniger Knoten haben als diese.\\
+\subsection{Kartenhierarchie}
+Wenn größere Strecken zurückgelegt werden sollen, nehmen die benötigten Kosten zum Berechnung schnell überhand. Eine gute Methode um dies zu vermeiden ist, eine vereinfachte, hierarchische Kartendarstellung zu erzeugen.\\
+Generell kann man sich dieses Bewegungsmuster quasi so vorstellen, dass es auf größeren Welten etwas wie Bahnlinien gibt, an die sich die Figur halten kann. Kurz vor dem Ziel wird dieser Pfad verlassen und mit höherer Auflösung nach dem besten Weg gesucht.
+Zum Beispiel lassen sich in vielen Spielen Häuser betreten und durch mehrere Zimmer beschreiten. Sitzt die Figur in einem Auto mit 120km/h auf der Autobahn, wird dies wohl nicht so schnell passieren.\\
+Die Hierarchie muss ebenfalls nicht Homogen verlaufen. So kann man Grids und Meshes je nach Bedarf verwenden, vergrößern oder vereinfachen.
+Ist die Welt auf dem hierarchisch obersten Layer, kann an bestimmten unveränderlichen Punkten, der einfachste Weg durch das Tile oder den Mesh bereits errechnet sein. Alle Wege, die eine gewisse Komplexität unterschreiten, sind so in der höchsten Auflösung bereits ermittelt.\\
+http://theory.stanford.edu/~amitp/GameProgramming/MapRepresentations.html
