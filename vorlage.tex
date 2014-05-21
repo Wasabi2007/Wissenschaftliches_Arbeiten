@@ -16,6 +16,7 @@
 %\usepackage[bottom]{footmisc} % Erzeugung von Fußnoten nur beim Bedarf einbinden
 \usepackage{caption}
 \usepackage{subcaption}
+%\usepackage{wrapfig}
 
 %%-----------------------------------------------------
 %\newif\ifpdf
@@ -81,8 +82,9 @@ amsmath
 \begin{document}
 
 %------------------------- Titelblatt -------------------------------------
-\title{\textbf{Wohin geht?}}
-\subtitle{Where go?}
+\title{\textbf{Wo geht's lang...?}}
+\subtitle{Analyse von Wegfindealgorithmen und ihr Einsatz 
+im Gamedesign}
 %---- Die Art der Dokumentation kann hier ausgewählt werden---------------
 %\project{Master Abschlussarbeit}
 %\project{Master Projektstudium}
@@ -91,10 +93,13 @@ amsmath
 %\project{Seminar zur Vorlesung ...}
 \project{Wissenschaftliches Arbeiten}
 %--------------------------------------------------------------------------
-\supervisor{Titel Vorname Name} % Betreuer der Arbeit
+\supervisor{\\Prof. Dr. J. Lohscheller, \\
+    Prof. Dr. A. Lux,  \\
+     Prof. Dr. K. Märthesheimer, \\
+      Prof. Dr. N. Rudolph} % Betreuer der Arbeit
 \author{Boos, Jeremias \\ Neugebauer, Manuel} %Autor der Arbeit
-\address{\today ,Trier} % Im Zusammenhang mit dem Datum wird hinter dem Ort ein Komma angegeben
-\submitdate{Abgabedatum} % Abgabedatum
+\address{Trier, } % Im Zusammenhang mit dem Datum wird hinter dem Ort ein Komma angegeben
+\submitdate{22.05.2014} % Abgabedatum
 %\begingroup
 %  \renewcommand{\thepage}{title}
 %  \mytitlepage
@@ -109,17 +114,21 @@ amsmath
 \frontmatter 
 %--------------------------------------------------------------------------
 \input{chapters/Danksagungen} %Danksagungen
-?Danke für diesen guten Morgen!?
-\input{chapters/Vorwort}
+%\input{chapters/Vorwort}
 \input{chapters/Kurzfassung} % Kurzfassung Deutsch/English
 \tableofcontents %Inhaltsverzeichnis - notwendig
 \listoffigures % Abbildungsverzeichnis - optional
-\listoftables % Tabellenverzeichnis- optional
+%\listoftables % Tabellenverzeichnis- optional
 %--------------------------------------------------------------------------
 \mainmatter                        %Hauptteil (ab hier arab. Seitenzahlen)
 %--------------------------------------------------------------------------
 % Kapitell werden einzeln abgespeichert und hier eingefügt
 \input{chapters/Einleitung}
+\input{chapters/Dijkstra}
+\input{chapters/A-Stern}
+\input{chapters/Vergleich}
+\input{chapters/Implementierung}
+
 %\input{chapters/Problemstellung}
 %\input{chapters/Aufgabenstellung}
 %\input{chapters/Inhalt}
