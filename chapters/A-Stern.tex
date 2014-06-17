@@ -1,11 +1,12 @@
 \chapter{A*}
-Der Algorithmus von Dijkstra stellte sich als zufriedenstellend für den Netzwerkverkehr heraus. Aber für die Anforderungen, die KI-Entwickler Ende der Sechziger Jahre zu bewältigen hatten war er einfach nicht geeignet. Dijkstra ist klar im Vorteil wenn eine Strecke über bekannte Punkte mit konstanten Längen zurück gelegt werden soll. Aber sobald es möglich ist die Kosten vom aktuelle Knoten zum Ziel zu schätzen, kann die Wegfindung optimiert werden.
-A* ist demnach kein komplett neues Verfahren, sondern nur eine Optimierung des ursprünglichen Algorithmus hinsichtlich dieser Punkte. Das wird besonders deutlich, wenn A* gegen eine Wand läuft. Hier gleicht sich der Schätzwert, für neue Knoten, welche vermeidlich nahe am Ziel sind mit den ehemals höheren Kosten der Knoten am Startpunkt an. So wird, je nach Implementierung, ein Feld nach dem anderen abgeklappert bis der Pfad nicht mehr blockiert ist.
-Eine Besonderheit von A* ist, dass er optimal effizient eine Lösung findet - diese ist gleichzeitig der günstigste Weg. Er ist, unter den selben Ausgangsbedingungen (Heuristik), in seiner Geschwindigkeit kombiniert mit jener Genauigkeit nicht mehr zu übertrumpfen.\footnote{ http://de.wikipedia.org/w/index.php?title=A*-Algorithmus\&oldid=129862855}\\
+Der Algorithmus von Dijkstra stellte sich als zufriedenstellend für den Netzwerkverkehr heraus. Aber für die Anforderungen, die KI-Entwickler Ende der sechziger Jahre, durch das Aufkommen von Computerspielen, zu bewältigen hatten war er einfach nicht geeignet. Dijkstra ist klar im Vorteil, wenn eine Strecke über bekannte Punkte mit konstanten Längen zurück gelegt werden soll. Aber sobald es möglich ist die Kosten vom aktuelle Knoten zum Ziel zu schätzen, kann die Wegfindung optimiert werden.\\
+A* ist demnach kein komplett neues Verfahren, sondern nur eine Optimierung des ursprünglichen Algorithmus hinsichtlich dieser Punkte. Das wird besonders deutlich, wenn A* gegen eine Wand läuft. Hier gleicht sich der Schätzwert, für neue Knoten, welche vermeidlich nahe am Ziel sind mit den ehemals höheren Kosten der Knoten am Startpunkt an. So wird, je nach Implementierung, ein Feld nach dem anderen besucht, bis der Pfad nicht mehr blockiert ist.
+Eine Besonderheit von A* ist, dass er optimal effizient eine Lösung findet - diese ist gleichzeitig der günstigste Weg.
+\\ Er ist, unter den selben Ausgangsbedingungen (Heuristik), in seiner Geschwindigkeit, kombiniert mit jener Genauigkeit nicht mehr zu übertrumpfen.\footnote{ \url{http://de.wikipedia.org/w/index.php?title=A*-Algorithmus\&oldid=129862855}}\\
 Dazu kommt, dass die Heuristik dahingehend modifizierbar ist, A* schneller zum Ziel finden zu lassen. Dieser Weg wird voraussichtlich nicht der optimale sein. So wird Rechenzeit auf Kosten der Genauigkeit gewonnen.
 
 \section{Funktionsweise}
-Vor jedem Schritt werden die anliegenden Knoten überprüft. Der Computer berechnet zu erst, wie bei Dijkstra, die bisher zurück gelegten Kosten. Zusätzlich kommt nun hinzu, dass die Punkte noch einen Schätzwert erhalten, wie weit sie vom Ziel entfernt sind.\\
+Vor jedem Schritt werden die anliegenden Knoten überprüft. Der Computer berechnet zuerst, wie bei Dijkstra, die bisher zurückgelegten Kosten. Zusätzlich kommt nun hinzu, dass die Punkte noch einen Schätzwert erhalten, wie weit sie vom Ziel entfernt sind.\\
 Zur Formel kommt dies nun als der Faktor $h(k)$.\\
 Es gilt nun:\\
 $F(k)=D(k)+h(k)$
@@ -16,19 +17,23 @@ $F(k)=D(k)+h(k)$
 
 \begin{figure}
 \centering
-\caption{Schritt 1 - 5}
+\caption{Vorgehensweise von A*}
+
 \label{Schritt 1 - 5}
+
+\begin{tabular}{c c}
 \begin{subfigure}[b]{0.49\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
-	\caption{Schritt \arabic{Schritt}}
+	\caption{Ausgangssituation Start(Grün) und Ziel(Rot) werden durch das Hindernis(Blau) getrennt.}
 	\label{A-Stern-Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
 \end{subfigure}
-\hfill
+&
 \begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+	\centering
 		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
-	\caption{Schritt \arabic{Schritt}}
+	\caption{Untersuchen der Nachbarknoten vom Startpunkt aus. Oben links die geschätzten Gesamtkosten. Unten links die bisherigen Wegkosten. Unten rechts die geschätzte Entfernung.}
 	\label{A-Stern-Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
 \end{subfigure}
@@ -36,26 +41,29 @@ $F(k)=D(k)+h(k)$
 \begin{subfigure}[b]{0.49\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
-	\caption{Schritt \arabic{Schritt}}
+	\caption{Die blaue Umrahmung zeigt die besuchten Knoten an. Hier endete die Suche in einer Wand. Nun wird der günstigste Knoten aus der Liste genommen.}
 	\label{A-Stern-Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.49\textwidth} %[hbtp]
+&
+\begin{subfigure}[b]{0.49\textwidth} %[hbtp] 
+	\centering
 		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
-	\caption{Schritt \arabic{Schritt}}
+	\caption{Der Zielknoten wurde gefunden und wird in die Liste der abgeschlossenen Knoten mit eingereiht.}
 	\label{A-Stern-Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
 \end{subfigure}
 \\
+\multicolumn{2}{ c  }{
 \begin{subfigure}[b]{0.49\textwidth} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{images/A-Stern-Beispiel/aStar(\arabic{Schritt}).jpg}
-	\caption{Schritt \arabic{Schritt}}
+	\caption{Nun kann der Weg vom Ziel aus durch die Verweise der einzelnen Knoten auf die Vorgängerknoten gebildet werden.}
 	\label{A-Stern-Schritt \arabic{Schritt}}
 	\addtocounter{Schritt}{1}
-\end{subfigure}\\
-{\small{\it{Quelle:\cite{Les:06}}}}
+\end{subfigure}}
+\end{tabular}
+\\{\small{\it{Quelle:\cite{Les:06}}}}
 \end{figure}
 
 

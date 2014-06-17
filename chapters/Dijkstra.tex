@@ -1,5 +1,5 @@
 \chapter {Dijkstra}
-Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der für Netzwerkrouting eingesetzt wird.\footnote{\cite{tanenbaum:CN}} \\
+Der auf der Graphentheorie beruhende Dijkstra bildet die Grundlage zu A*. Er wurde vom gleichnamigen Professor im Jahr 1959 in einem Lehrbuch erläutert.\footnote{\cite{EWD:NumerMath59}} Es ist der üblichste Algorithmus, der für Netzwerkrouting eingesetzt wird.\footnote{\cite{tanenbaum:CN}} \\
 
 \section {Funktionsweise}
 Die Knoten im Dijkstra-Algorithmus haben folgende Eigenschaften:
@@ -32,7 +32,7 @@ Die Knoten im Dijkstra-Algorithmus haben folgende Eigenschaften:
 		Falls für den Knoten schon einmal Kosten ermittelt wurden, so wird der niedrigste Betrag übernommen.
 	\end{itemize}
 \end{enumerate}
-Schritte 3 und 4 werden wiederholt bis die Liste der zu Untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf, kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.(\ref{Schritt 1} - \ref{Schritt 25})\\
+Schritte 3 und 4 werden wiederholt, bis die Liste der zu untersuchenden Knoten leer ist. Bei einem erfolgreichen Ablauf kann vom Ziel bis zum Startknoten der kürzeste Weg verfolgt werden.(\ref{Schritt 1} - \ref{Schritt 25})\\
 Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Knoten.\\
 \newpage
 \subsection{Ein kleines Beispiel}
@@ -42,7 +42,7 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 
 \begin{figure}
 \centering
-\caption{Schritt 0 - 11}
+\caption{Schritte vom Start bis zum Ende der Untersuchung der Nachbarknoten von 2}
 \label{Schritt 0 - 11}
 \begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering
@@ -138,7 +138,7 @@ Falls das Ziel nicht erreicht wurde, gibt es keinen Weg über die angegebenen Kno
 \end{subfigure}
 \end{figure}
 \begin{figure}
-\caption{Schritt 12 - 26}
+\caption{2 wird in die "'abgeschlossen Liste"' integriert, bis "'Pfad gefunden"'}
 \label{Schritt 12 - 26}
 \begin{subfigure}[b]{0.24\textwidth} %[hbtp]
 	\centering

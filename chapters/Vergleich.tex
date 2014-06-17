@@ -5,10 +5,10 @@ dass Worst- und Best-Case Situationen absolut identische Effizienzgrade haben.\\
 Der Best-Case ist natürlich der Fall, in dem direkt in der ersten Iteration das Ziel gefunden wurde.\\
 Der Worst-Case dem entsprechend, wenn das Ziel nicht zu finden, oder der letzte erreichbare Knoten ist.\\
 Das zeigt, dass die Verbesserungen, welche A* von Dijkstras Algorithmus unterscheiden, nur ins Auge springen, wenn die Wegkosten geschätzt werden können.
-Ein offenes Feld mit diversen einfachen Hindernissen ist demnach mehr geeignet als ein Labyrinth, welches nur wenige Strecken zum Ausgang zu lässt.\\
+Ein offenes Feld mit diversen, einfachen Hindernissen ist demnach mehr geeignet als ein Labyrinth, welches nur wenige Strecken zum Ausgang zulässt.\\
 \newpage
-Wie auf \ref{DvsA} zu sehen, kann eine gleiche Ausgangssituation unterschiedlich schnell gelöst werden. Da Dijkstra keine Präferenzen beim Wählen der Knoten hat, sucht er alle Kanten, unabhängig von der Entfernung ab. \\
-A* Stern hingegen besucht deutlich weniger Knoten. In dieser Situation lief er zuerst in das Hindernis. Verhielt sich anschließend wie Dijkstra, bis ein Weg um das Hindernis gefunden wurde. Wie in \ref{lastFrameA} und \ref{lastFrameD} zu sehen.
+Wie auf \ref{DvsA} zu sehen, kann eine gleiche Ausgangssituation unterschiedlich schnell gelöst werden. Da Dijkstra keine Präferenzen beim Wählen der Knoten hat, sucht er alle Kanten, unabhängig von der Entfernung, ab. \\
+A* hingegen besucht deutlich weniger Knoten. In dieser Situation lief er zuerst in das Hindernis. Verhielt sich anschließend wie Dijkstra, bis ein Weg um das Hindernis gefunden wurde. Wie in \ref{lastFrameA} und \ref{lastFrameD} zu sehen.
 
 
 \begin{figure}
