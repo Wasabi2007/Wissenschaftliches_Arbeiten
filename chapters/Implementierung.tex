@@ -37,12 +37,33 @@ Auf den Mesh-Polygonen können sich die Figuren in unterschiedlicher Weise orient
 \item \textbf{Polygon movement\\}
 Die Knoten sitzen im Mittelpunkt der Dreiecke.\\
 Da die Form die wenigsten Punkte benutzt, wird die CPU nicht zu arg belastet. Sie bietet dennoch ein natürliches Bewegungsmuster.
+\begin{figure}
+	\centering
+		\includegraphics[width=0.3\textwidth]{images/faces.png}
+%	\caption{Off-Meshes links Beispiel aus Unity3D}
+	\label{MeshFaces}
+%	{\small{\it{Quelle: \cite{UnityDoc:np}}}}
+\end{figure}
 \item  \textbf{Edge movement\\}
 Die Knoten sitzen auf den Kanten, die an andere Dreiecke schließen\\
 Meist ist es unnötig durch den Mittelpunkt aller Polygone zu gehen. Dieser Weg braucht mehr CPU-Leistung, sieht dafür noch etwas realistischer aus.
+\begin{figure}
+	\centering
+		\includegraphics[width=0.3\textwidth]{images/edges.png}
+%	\caption{Off-Meshes links Beispiel aus Unity3D}
+	\label{MeshEdges}
+%	{\small{\it{Quelle: \cite{UnityDoc:np}}}}
+\end{figure}
 \item \textbf{Vertex movement\\}
 Die Knoten sitzen auf allen Eckpunkten\\
 Der schnellste Weg geht meist direkt an einem Objekt vorbei. Mit dieser Mesh-Anordnung nimmt die Figur auch auf jeden Fall diese Route. Aber "'Wandschmuser"' hinterlassen nicht gerade das Bild eines realistischen Spielers.
+\begin{figure}
+	\centering
+		\includegraphics[width=0.3\textwidth]{images/vertices.png}
+	%\caption{Off-Meshes links Beispiel aus Unity3D}
+	\label{MeshVertices}
+	%{\small{\it{Quelle: \cite{UnityDoc:np}}}}
+\end{figure}
 \item \textbf{Hybrid movement\\}
 Kombinationen der Oberen\\
 Dies wird wohl die natürlichste Form der Spielerbewegung wiedergeben. Aber dafür gibt es auch immer eine größere Menge an Knoten zu berechnen, als wenn nur eine andere Form implementiert wird.\cite{Pat:mr}
