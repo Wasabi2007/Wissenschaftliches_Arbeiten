@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class A_Stern : MonoBehaviour {
 
+	public Camera SelectCam;
+
 	public GameObject FieldTile;
 	public int X_Size;
 	public int Y_Size;
@@ -46,13 +48,16 @@ public class A_Stern : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown (0)) {
-			Vector3 mPos = Input.mousePosition;
-			int x = (int)(mPos.x / tileWidth);
-			int y = (int)(mPos.y / tileHight);
+			Ray ray = SelectCam.ScreenPointToRay(Input.mousePosition);
+			/*float mposDis = Vector3.Dot(transform.position-ray.origin,ray.direction)/Vector3.Dot(ray.direction,ray.direction);
+			Vector3 mPos = ray.GetPoint(mposDis);
+			Debug.Log(mPos);
+			int x = (int)(mPos.x / tileWidth+0.5f);
+			int y = (int)(mPos.z / tileHight+0.5f);
 			Debug.Log("X: "+x+" Y:"+y);
 			if(x >= 0 && x < X_Size && y >= 0 && y < Y_Size){
 				FieldArray[x,y].renderer.material.color = Obstical_Color;
-			}
+			}*/
 		}
 	}
 }

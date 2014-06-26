@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a038ca4e8c4f4664498b254e21007e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectCam: {fileID: 1656966669}
   FieldTile: {fileID: 100000, guid: 6b2394fc6a720004ab92040b6d88ffe9, type: 3}
   X_Size: 10
   Y_Size: 5
@@ -200,7 +201,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1656966665}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 11.3728333, z: 0}
+  m_LocalPosition: {x: 10, y: 11.3728333, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
