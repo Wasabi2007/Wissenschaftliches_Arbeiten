@@ -131,7 +131,7 @@ MonoBehaviour:
   Default: {r: .470588207, g: .470588207, b: .470588207, a: 1}
   X: 0
   Y: 0
-  lineRenderer: {fileID: 12000000}
+  activeLineRenderer: {fileID: 12000000}
 --- !u!120 &12000000
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -156,8 +156,8 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
-    startWidth: .100000001
-    endWidth: .100000001
+    startWidth: .200000003
+    endWidth: 0
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295

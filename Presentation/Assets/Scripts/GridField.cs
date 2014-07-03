@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GridField : MonoBehaviour {
 	public enum FieldState{
@@ -24,12 +25,14 @@ public class GridField : MonoBehaviour {
 	public int X;
 	public int Y;
 
-	public LineRenderer lineRenderer;
+	public LineRenderer activeLineRenderer;
+	private List<GameObject> lineRender;
 
 	// Use this for initialization
 	void Start () {
-		lineRenderer.enabled = false;
-		lineRenderer.SetColors (Default, Default);
+		activeLineRenderer.enabled = false;
+		activeLineRenderer.SetColors (Default, Default);
+		lineRender = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -39,21 +42,42 @@ public class GridField : MonoBehaviour {
 
 	void setupLinerender (){
 		if (prevLink == null) {
-						lineRenderer.enabled = false;
-			return;
-				}
+			if (lineRender.Count != 0){
+				activeLineRenderer = lineRender[0].GetComponent<LineRenderer>();
+				lineRender.RemoveAt(0);
+			}
 
-		lineRenderer.SetVertexCount (2);
-		lineRenderer.SetPosition (0, prevLink.transform.position + Vector3.up * 0.1f);
-		lineRenderer.SetPosition (1, transform.position + Vector3.up * 0.1f);
-		lineRenderer.enabled = true;
+			activeLineRenderer.enabled = false;
+
+
+			foreach(GameObject go in lineRender){
+				GameObject.Destroy(go);
+			}
+			lineRender.Clear();
+			return;
+		}
+
+		if (lineRender.Count != 0) {
+			GameObject go = (GameObject)GameObject.Instantiate(activeLineRenderer.gameObject);
+			go.transform.parent = this.transform;
+			activeLineRenderer = go.GetComponent<LineRenderer>();
+		}
+
+		activeLineRenderer.SetVertexCount (2);
+		activeLineRenderer.SetPosition (0, prevLink.transform.position + Vector3.up * 0.1f);
+		activeLineRenderer.SetPosition (1, transform.position + Vector3.up * 0.1f);
+		activeLineRenderer.enabled = true;
+
+		lineRender.Add (activeLineRenderer.gameObject);
+
+
 	}
 
 	public void SetWay (bool isWay){
 		if(isWay)
-			lineRenderer.SetColors (WayColor, WayColor);
+			activeLineRenderer.SetColors (WayColor, WayColor);
 		else
-			lineRenderer.SetColors (Default, Default);
+			activeLineRenderer.SetColors (Default, Default);
 	}
 
 	public void setState(FieldState State,Color col){
