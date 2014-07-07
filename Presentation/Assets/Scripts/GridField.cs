@@ -18,6 +18,8 @@ public class GridField : MonoBehaviour {
 	public float accumulatedDistance = 0;
 	[HideInInspector]
 	public float guessedTargetDistance = 0;
+	[HideInInspector]
+	public float evaValue = 0;
 
 	public Color WayColor;
 	public Color Default;

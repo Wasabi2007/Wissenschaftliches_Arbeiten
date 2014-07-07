@@ -12,13 +12,13 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   - m_Name: Walking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 1
+    m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
@@ -173,21 +173,21 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110280705}
+      first: {fileID: 0}
       second:
-      - {fileID: 110110844}
-    data:
-      first: {fileID: 110226427}
-      second:
-      - {fileID: 110141420}
+      - {fileID: 110162280}
     data:
       first: {fileID: 110200000}
       second:
       - {fileID: 110100000}
     data:
-      first: {fileID: 0}
+      first: {fileID: 110226427}
       second:
-      - {fileID: 110162280}
+      - {fileID: 110141420}
+    data:
+      first: {fileID: 110280705}
+      second:
+      - {fileID: 110110844}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

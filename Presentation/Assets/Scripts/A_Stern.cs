@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 public class A_Stern : MonoBehaviour {
 	public enum EditMode{
@@ -20,6 +21,7 @@ public class A_Stern : MonoBehaviour {
 	public bool useDijkstra = false;
 	public bool withDiagonals = true;
 	public bool search = false;
+	public bool microSearch = false;
 	public EditMode editState = EditMode.Obstical;
 
 	public Gradient Start_Color;
@@ -29,6 +31,23 @@ public class A_Stern : MonoBehaviour {
 	public Gradient Closed_Color;
 	public Gradient Obstical_Color;
 	public Gradient Path_Color;
+
+	public DistanceVis disVis;
+	public Fieldinfo currentFieldInfo;
+	public Fieldinfo researchFieldInfo;
+
+	public Marker StartMarker;
+	public Marker EndMarker;
+	public Marker CurrentFieldMarker;
+	public Marker ResearchFieldMarker;
+
+	public UILabel OpenListOut;
+	public Character WalkChar;
+	public int CharctersAmmount = 10;
+
+	private List<Character> Charcters;
+	private List<GridField> CurrentWay;
+	private float spawnTime = 1.0f;
 
 	private List<GridField> Field;
 	private GridField[,] FieldArray;
@@ -40,10 +59,29 @@ public class A_Stern : MonoBehaviour {
 
 	private bool searching = false;
 
+	public float WaitTime = 1.0f;
+	private float timeStamp = 0.0f;
+
+
+	private StringBuilder openListOut; 
 	// Use this for initialization
 	void Start () {
 		if (!FieldTile.GetComponent<GridField> ())
 						return;
+
+		StartMarker.gameObject.SetActive(false);
+		EndMarker.gameObject.SetActive(false);
+		CurrentFieldMarker.gameObject.SetActive(false);
+		ResearchFieldMarker.gameObject.SetActive(false);
+		openListOut = new StringBuilder ();
+
+		CurrentWay = new List<GridField>();
+		Charcters = new List<Character> ();
+		for (int charCount = 0; charCount < CharctersAmmount; charCount++) {
+			GameObject go = (GameObject)GameObject.Instantiate(WalkChar.gameObject);
+			go.SetActive(false);
+			Charcters.Add(go.GetComponent<Character>());
+		}
 
 		Field = new List<GridField> ();
 		FieldArray = new GridField[X_Size,Y_Size];
@@ -58,8 +96,9 @@ public class A_Stern : MonoBehaviour {
 				GameObject go = (GameObject)GameObject.Instantiate(FieldTile);
 				go.transform.position = offsetPosition;	
 				go.transform.parent = transform;
-				go.renderer.material.color = Default_Color.Evaluate(Random.value);
 				GridField selectedField = go.GetComponent<GridField>();
+				selectedField.evaValue = Random.value;
+				go.renderer.material.color = Default_Color.Evaluate(selectedField.evaValue);
 				selectedField.X = x;
 				selectedField.Y = y;
 				Field.Add(selectedField);
@@ -67,11 +106,32 @@ public class A_Stern : MonoBehaviour {
 			}
 		}
 
+		StartMarker.gameObject.SetActive(true);
 		start = FieldArray [Mathf.RoundToInt(Random.Range(0,X_Size)), Mathf.RoundToInt(Random.Range(0,Y_Size))];
-		start.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(Random.value));
+		start.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(start.evaValue));
+		StartMarker.SetPos (start.transform.position);
 
-		end = FieldArray [Mathf.RoundToInt(Random.Range(0,X_Size)), Mathf.RoundToInt(Random.Range(0,Y_Size))];
-		end.setState(GridField.FieldState.Unknown,End_Color.Evaluate(Random.value));
+		EndMarker.gameObject.SetActive(true);
+		do {
+						end = FieldArray [Mathf.RoundToInt (Random.Range (0, X_Size)), Mathf.RoundToInt (Random.Range (0, Y_Size))];
+				} while(end == start);
+		end.setState(GridField.FieldState.Unknown,End_Color.Evaluate(end.evaValue));
+		EndMarker.SetPos (end.transform.position);
+		
+		disVis.gameObject.SetActive (false);
+	}
+
+	IEnumerator SpawnChars() {
+		foreach (Character c in Charcters) {
+			if(searching || !complet)
+				break;
+
+						c.gameObject.SetActive(true);
+						c.WalkWay(CurrentWay);
+						yield return new WaitForSeconds (spawnTime);
+
+		}
+
 	}
 	
 	// Update is called once per frame
@@ -83,9 +143,13 @@ public class A_Stern : MonoBehaviour {
 				GridField selectedField = hitInfo.collider.GetComponent<GridField>();
 				if(selectedField){
 					Clear();
+					CurrentFieldMarker.gameObject.SetActive(false);
+					ResearchFieldMarker.gameObject.SetActive(false);
+					disVis.gameObject.SetActive (false);
+					complet = true;
 					switch(editState){
 					case EditMode.Default:
-						selectedField.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(Random.value));
+						selectedField.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(selectedField.evaValue));
 						if(selectedField == end){
 							end = null;
 						}
@@ -94,27 +158,32 @@ public class A_Stern : MonoBehaviour {
 						}
 						break;
 					case EditMode.Start:
+						StartMarker.gameObject.SetActive(true);
 							if(start){
-							start.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(Random.value));
+							start.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(selectedField.evaValue));
 							}
-						selectedField.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(Random.value));
+						selectedField.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(selectedField.evaValue));
 						start = selectedField;
+						StartMarker.SetPos (start.transform.position);
 						break;
 					case EditMode.End:
+						EndMarker.gameObject.SetActive(true);
 						if(end){
-							end.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(Random.value));
+							end.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(selectedField.evaValue));
 						}
-						selectedField.setState(GridField.FieldState.Unknown,End_Color.Evaluate(Random.value));
+						selectedField.setState(GridField.FieldState.Unknown,End_Color.Evaluate(selectedField.evaValue));
 						end = selectedField;
-
+						EndMarker.SetPos (end.transform.position);
 						break;
 					case EditMode.Obstical:
-						selectedField.setState(GridField.FieldState.Obstical,Obstical_Color.Evaluate(Random.value));
+						selectedField.setState(GridField.FieldState.Obstical,Obstical_Color.Evaluate(selectedField.evaValue));
 						if(selectedField == end){
 							end = null;
+							EndMarker.gameObject.SetActive(false);
 						}
 						if( selectedField == start){
 							start = null;
+							StartMarker.gameObject.SetActive(false);
 						}
 						break;
 					}
@@ -123,10 +192,11 @@ public class A_Stern : MonoBehaviour {
 				}
 			}
 		}
-		if(searching){
+		if(searching && Time.time > timeStamp){
 			//search = false;
 			//Clear();
 			ASternStep();
+			timeStamp = Time.time+WaitTime;
 		}
 
 	}
@@ -149,6 +219,10 @@ public class A_Stern : MonoBehaviour {
 		searching = false;
 	}
 
+	public void Activate(){
+		gameObject.SetActive (true);
+	}
+
 
 	public void SetEditState(string input){
 		switch (input) {
@@ -168,16 +242,20 @@ public class A_Stern : MonoBehaviour {
 	}
 
 	public void Clear(){
+		OpenListOut.text = "OpenList:";
+		foreach (Character c in Charcters)
+				c.gameObject.SetActive(false);
+
 		foreach (GridField gField in Field) {
 			gField.PrevLink = null;
 			gField.SetWay(false);
 						if (gField.State == GridField.FieldState.Open || gField.State == GridField.FieldState.Closed) {
 							if(gField == start){
-					gField.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(Random.value));
+					gField.setState(GridField.FieldState.Unknown,Start_Color.Evaluate(gField.evaValue));
 							}else if(gField == end){
-					gField.setState(GridField.FieldState.Unknown,End_Color.Evaluate(Random.value));	
+					gField.setState(GridField.FieldState.Unknown,End_Color.Evaluate(gField.evaValue));	
 							}else{
-					gField.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(Random.value));
+					gField.setState(GridField.FieldState.Unknown,Default_Color.Evaluate(gField.evaValue));
 							}
 						}
 				}
@@ -191,10 +269,12 @@ public class A_Stern : MonoBehaviour {
 							return gField.guessedTargetDistance;
 		}
 
-	SortedList<float,List<GridField>> OpenList = new SortedList<float, List<GridField>> ();
-	List<GridField> ClosedList = new List<GridField> ();
-	List<GridField> neigbours = new List<GridField>();
-	bool complet = true;
+	private SortedList<float,List<GridField>> OpenList = new SortedList<float, List<GridField>> ();
+	private List<GridField> ClosedList = new List<GridField> ();
+	private List<GridField> neigbours = new List<GridField>();
+	private GridField currentField;
+	private bool complet = true;
+	private int neigbourCount = 0;
 
 	public void ASternStep(){
 		if (!start || !end)
@@ -204,6 +284,11 @@ public class A_Stern : MonoBehaviour {
 
 		if (complet) {
 			Clear();
+						CurrentFieldMarker.gameObject.SetActive(true);
+						ResearchFieldMarker.gameObject.SetActive(true);
+			if(!useDijkstra && !disVis.gameObject.activeSelf)
+				disVis.gameObject.SetActive(true);
+
 						OpenList.Clear ();
 						ClosedList.Clear ();
 						neigbours.Clear ();
@@ -215,12 +300,16 @@ public class A_Stern : MonoBehaviour {
 				}
 
 		int stepCount = 0;
-		
-			GridField currentField = OpenList.Values[0][0];
-			OpenList.Values[0].RemoveAt(0);
-			if(OpenList.Values[0].Count == 0){
-				OpenList.RemoveAt(0);
-			}
+
+		if (neigbourCount >= neigbours.Count || currentField == null) {
+						currentField = OpenList.Values [0] [0];
+						OpenList.Values [0].RemoveAt (0);
+						if (OpenList.Values [0].Count == 0) {
+								OpenList.RemoveAt (0);
+						}
+					currentFieldInfo.setInfo(currentField.X,currentField.Y,currentField.State,currentField.accumulatedDistance,(useDijkstra?currentField.accumulatedDistance:currentField.guessedTargetDistance));
+					CurrentFieldMarker.SetPos (currentField.transform.position);
+				}
 			researchNeigbours (OpenList, currentField);
 			/*Debug.Log("Step "+(stepCount++));
 			foreach( KeyValuePair<float, List<GridField>> kvp in OpenList )
@@ -229,13 +318,13 @@ public class A_Stern : MonoBehaviour {
 			}*/
 			
 				if(currentField!=start && currentField!=end)
-			currentField.setState(GridField.FieldState.Closed,Closed_Color.Evaluate(Random.value));
+			currentField.setState(GridField.FieldState.Closed,Closed_Color.Evaluate(currentField.evaValue));
 				else
 					currentField.State = GridField.FieldState.Closed;
 
 			ClosedList.Add(currentField);
 
-		if (end.State != GridField.FieldState.Closed && OpenList.Count == 0) {
+		if (end.State != GridField.FieldState.Closed && OpenList.Count == 0 && neigbourCount >= neigbours.Count) {
 			complet = true;
 			searching = false;
 		}
@@ -251,42 +340,53 @@ public class A_Stern : MonoBehaviour {
 
 	void researchNeigbours (SortedList<float, List<GridField>> OpenList, GridField currentField)
 	{
-		int x=currentField.X,y=currentField.Y;
-		neigbours.Clear();
-		if(y>0)
-			neigbours.Add(FieldArray[x,y-1]);
-		if(x<X_Size-1)
-			neigbours.Add(FieldArray[x+1,y]);
-		if(y<Y_Size-1)
-			neigbours.Add(FieldArray[x,y+1]);
-		if(x>0)
-			neigbours.Add(FieldArray[x-1,y]);
-		if(withDiagonals){
-			if(y>0 && x>0)
-				neigbours.Add(FieldArray[x-1,y-1]);
-			if(y<Y_Size-1 && x<X_Size-1)
-				neigbours.Add(FieldArray[x+1,y+1]);
-			if(y>0 && x<X_Size-1 )
-				neigbours.Add(FieldArray[x+1,y-1]);
-			if(y<Y_Size-1 && x>0)
-				neigbours.Add(FieldArray[x-1,y+1]);
-		}
-
-		foreach (GridField gField in neigbours) {
-			nextNeighbour (gField, currentField);
-		}
+		if (neigbourCount >= neigbours.Count) {
+						int x = currentField.X, y = currentField.Y;
+						neigbours.Clear ();
+						if (y > 0)
+								neigbours.Add (FieldArray [x, y - 1]);
+						if (x < X_Size - 1)
+								neigbours.Add (FieldArray [x + 1, y]);
+						if (y < Y_Size - 1)
+								neigbours.Add (FieldArray [x, y + 1]);
+						if (x > 0)
+								neigbours.Add (FieldArray [x - 1, y]);
+						if (withDiagonals) {
+								if (y > 0 && x > 0)
+										neigbours.Add (FieldArray [x - 1, y - 1]);
+								if (y < Y_Size - 1 && x < X_Size - 1)
+										neigbours.Add (FieldArray [x + 1, y + 1]);
+								if (y > 0 && x < X_Size - 1)
+										neigbours.Add (FieldArray [x + 1, y - 1]);
+								if (y < Y_Size - 1 && x > 0)
+										neigbours.Add (FieldArray [x - 1, y + 1]);
+						}
+						neigbourCount = 0;
+				}
+		
+		if (microSearch) {
+						nextNeighbour (neigbours [neigbourCount], currentField);
+						neigbourCount++;
+				} else {
+						for(;neigbourCount < neigbours.Count;neigbourCount++)
+							nextNeighbour (neigbours [neigbourCount], currentField);
+				}
 
 	}
 
 	void nextNeighbour (GridField gField, GridField currentField)
 	{
+		researchFieldInfo.setInfo(gField.X,gField.Y,gField.State,gField.accumulatedDistance,(useDijkstra?gField.accumulatedDistance:gField.guessedTargetDistance));
+		ResearchFieldMarker.SetPos (gField.transform.position);
 		if (gField.State == GridField.FieldState.Unknown) {
 			if (gField != start && gField != end)
-				gField.setState (GridField.FieldState.Open, Open_Color.Evaluate(Random.value));
+				gField.setState (GridField.FieldState.Open, Open_Color.Evaluate(gField.evaValue));
 			else
 				gField.State = GridField.FieldState.Open;
 			gField.accumulatedDistance = currentField.accumulatedDistance + Vector3.Distance (currentField.transform.position, gField.transform.position);
-			gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? gField.accumulatedDistance :Vector3.Distance (gField.transform.position, end.transform.position));
+			if(!useDijkstra)
+				disVis.VisDistance(gField.transform.position+Vector3.up,end.transform.position+Vector3.up);
+			gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? 0 :Vector3.Distance (gField.transform.position, end.transform.position));
 			gField.PrevLink = currentField;
 			if (!OpenList.ContainsKey (gField.guessedTargetDistance )) {
 				OpenList.Add (gField.guessedTargetDistance , new List<GridField> ());
@@ -301,7 +401,9 @@ public class A_Stern : MonoBehaviour {
 					OpenList.Remove (gField.guessedTargetDistance );
 					}
 					gField.accumulatedDistance = accDistance;
-				gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? gField.accumulatedDistance :Vector3.Distance (gField.transform.position, end.transform.position));
+				if(!useDijkstra)
+				disVis.VisDistance(gField.transform.position+Vector3.up,end.transform.position+Vector3.up);
+				gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? 0 :Vector3.Distance (gField.transform.position, end.transform.position));
 				gField.PrevLink = currentField;
 				if (!OpenList.ContainsKey (gField.guessedTargetDistance )) {
 					OpenList.Add (gField.guessedTargetDistance , new List<GridField> ());
@@ -309,6 +411,24 @@ public class A_Stern : MonoBehaviour {
 				OpenList [gField.guessedTargetDistance ].Add (gField);
 				}
 			}
+
+		openListOut.Length = 0;
+		openListOut.AppendLine ("OpenList:");
+		foreach(KeyValuePair<float,List<GridField>> kp in OpenList){
+			openListOut.Append(kp.Key);
+			openListOut.Append(" : ");
+			foreach(GridField gf in kp.Value){
+				openListOut.Append("[");
+				openListOut.Append(gf.X);
+				openListOut.Append(",");
+				openListOut.Append(gf.Y);
+				openListOut.Append("]");
+				openListOut.Append(" ");
+			}
+			openListOut.AppendLine();
+		}
+
+		OpenListOut.text = openListOut.ToString ();
 	}
 	/*else if(gField.State == GridField.FieldState.Closed){
 					float accDistance = currentField.accumulatedDistance + Vector3.Distance(currentField.transform.position, gField.transform.position)+(useDijkstra?0:Vector3.Distance(gField.transform.position, end.transform.position));
@@ -326,15 +446,24 @@ public class A_Stern : MonoBehaviour {
 			GridField gField = end;
 			end.SetWay (true);
 			int toMuch = 0;
+		CurrentWay.Clear ();
+		CurrentWay.Insert(0,end);
 			while (gField.PrevLink != start && toMuch <= 10000) {
 				gField = gField.PrevLink;
 				gField.SetWay (true);
-			gField.setState (GridField.FieldState.Closed, Path_Color.Evaluate(Random.value));
+			gField.setState (GridField.FieldState.Closed, Path_Color.Evaluate(gField.evaValue));
+			CurrentWay.Insert(0,gField);
 				toMuch++;
+				
 			}
+		CurrentWay.Insert(0,start);
 			if (toMuch >= 10000) {
 				Debug.Log ("WoW " + toMuch + " iterations oO");
 			}
+
+		spawnTime = CurrentWay.Count/10f;
+
+		StartCoroutine (SpawnChars());
 	}
 
 	public void setUseDijkstra(bool value) {
@@ -343,5 +472,11 @@ public class A_Stern : MonoBehaviour {
 
 	public void setWithDiagonals(bool value) {
 		withDiagonals = value;
+	}
+	public void setMicroSteps(bool value) {
+		microSearch = value;
+	}
+	public void setWaitTime(string value) {
+		WaitTime = float.Parse(value);
 	}
 }
