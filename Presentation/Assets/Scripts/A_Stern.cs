@@ -365,8 +365,12 @@ public class A_Stern : MonoBehaviour {
 				}
 		
 		if (microSearch) {
-						nextNeighbour (neigbours [neigbourCount], currentField);
-						neigbourCount++;
+			nextNeighbour (neigbours [neigbourCount], currentField);
+			if(reseached > 1){
+				reseached = 0;
+				neigbourCount++;
+			}		
+					
 				} else {
 						for(;neigbourCount < neigbours.Count;neigbourCount++)
 							nextNeighbour (neigbours [neigbourCount], currentField);
@@ -374,43 +378,51 @@ public class A_Stern : MonoBehaviour {
 
 	}
 
+	int reseached = 0;
+
 	void nextNeighbour (GridField gField, GridField currentField)
 	{
-		researchFieldInfo.setInfo(gField.X,gField.Y,gField.State,gField.accumulatedDistance,(useDijkstra?gField.accumulatedDistance:gField.guessedTargetDistance));
-		ResearchFieldMarker.SetPos (gField.transform.position);
-		if (gField.State == GridField.FieldState.Unknown) {
-			if (gField != start && gField != end)
-				gField.setState (GridField.FieldState.Open, Open_Color.Evaluate(gField.evaValue));
-			else
-				gField.State = GridField.FieldState.Open;
-			gField.accumulatedDistance = currentField.accumulatedDistance + Vector3.Distance (currentField.transform.position, gField.transform.position);
-			if(!useDijkstra)
-				disVis.VisDistance(gField.transform.position+Vector3.up,end.transform.position+Vector3.up);
-			gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? 0 :Vector3.Distance (gField.transform.position, end.transform.position));
-			gField.PrevLink = currentField;
-			if (!OpenList.ContainsKey (gField.guessedTargetDistance )) {
-				OpenList.Add (gField.guessedTargetDistance , new List<GridField> ());
-			}
-			OpenList [gField.guessedTargetDistance].Add (gField);
-		}
-		else if (gField.State == GridField.FieldState.Open) {
-			float accDistance = currentField.accumulatedDistance + Vector3.Distance (currentField.transform.position, gField.transform.position);// + (useDijkstra ? 0 : Vector3.Distance (gField.transform.position, end.transform.position));
-			if (gField.accumulatedDistance > accDistance) {
-				OpenList [gField.guessedTargetDistance ].Remove (gField);
-				if (OpenList [gField.guessedTargetDistance ].Count == 0) {
-					OpenList.Remove (gField.guessedTargetDistance );
-					}
-					gField.accumulatedDistance = accDistance;
-				if(!useDijkstra)
-				disVis.VisDistance(gField.transform.position+Vector3.up,end.transform.position+Vector3.up);
-				gField.guessedTargetDistance = gField.accumulatedDistance +  (useDijkstra ? 0 :Vector3.Distance (gField.transform.position, end.transform.position));
-				gField.PrevLink = currentField;
-				if (!OpenList.ContainsKey (gField.guessedTargetDistance )) {
-					OpenList.Add (gField.guessedTargetDistance , new List<GridField> ());
-					}
-				OpenList [gField.guessedTargetDistance ].Add (gField);
+		if (microSearch && reseached == 0) {
+			reseached++;
+				} else {
+			reseached++;
+						if (gField.State == GridField.FieldState.Unknown) {
+								if (gField != start && gField != end)
+										gField.setState (GridField.FieldState.Open, Open_Color.Evaluate (gField.evaValue));
+								else
+										gField.State = GridField.FieldState.Open;
+								gField.accumulatedDistance = currentField.accumulatedDistance + Vector3.Distance (currentField.transform.position, gField.transform.position);
+								if (!useDijkstra)
+										disVis.VisDistance (gField.transform.position + Vector3.up, end.transform.position + Vector3.up);
+								gField.guessedTargetDistance = gField.accumulatedDistance + (useDijkstra ? 0 : Vector3.Distance (gField.transform.position, end.transform.position));
+								gField.PrevLink = currentField;
+								if (!OpenList.ContainsKey (gField.guessedTargetDistance)) {
+										OpenList.Add (gField.guessedTargetDistance, new List<GridField> ());
+								}
+								OpenList [gField.guessedTargetDistance].Add (gField);
+						} else if (gField.State == GridField.FieldState.Open) {
+								float accDistance = currentField.accumulatedDistance + Vector3.Distance (currentField.transform.position, gField.transform.position);// + (useDijkstra ? 0 : Vector3.Distance (gField.transform.position, end.transform.position));
+								if (gField.accumulatedDistance > accDistance) {
+										OpenList [gField.guessedTargetDistance].Remove (gField);
+										if (OpenList [gField.guessedTargetDistance].Count == 0) {
+												OpenList.Remove (gField.guessedTargetDistance);
+										}
+										gField.accumulatedDistance = accDistance;
+										if (!useDijkstra)
+												disVis.VisDistance (gField.transform.position + Vector3.up, end.transform.position + Vector3.up);
+										gField.guessedTargetDistance = gField.accumulatedDistance + (useDijkstra ? 0 : Vector3.Distance (gField.transform.position, end.transform.position));
+										gField.PrevLink = currentField;
+										if (!OpenList.ContainsKey (gField.guessedTargetDistance)) {
+												OpenList.Add (gField.guessedTargetDistance, new List<GridField> ());
+										}
+										OpenList [gField.guessedTargetDistance].Add (gField);
+								}
+						}
+						
 				}
-			}
+
+		researchFieldInfo.setInfo (gField.X, gField.Y, gField.State, gField.accumulatedDistance, (useDijkstra ? gField.accumulatedDistance : gField.guessedTargetDistance));
+		ResearchFieldMarker.SetPos (gField.transform.position);
 
 		openListOut.Length = 0;
 		openListOut.AppendLine ("OpenList:");
