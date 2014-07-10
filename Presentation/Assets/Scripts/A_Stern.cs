@@ -243,6 +243,15 @@ public class A_Stern : MonoBehaviour {
 
 	public void Clear(){
 		OpenListOut.text = "OpenList:";
+		OpenList.Clear ();
+		ClosedList.Clear ();
+		neigbours.Clear ();
+		neigbourCount = 0;
+		disVis.gameObject.SetActive (false);
+		CurrentFieldMarker.gameObject.SetActive(false);
+		ResearchFieldMarker.gameObject.SetActive(false);
+
+
 		foreach (Character c in Charcters)
 				c.gameObject.SetActive(false);
 
@@ -259,6 +268,8 @@ public class A_Stern : MonoBehaviour {
 							}
 						}
 				}
+
+		complet = true;
 	}
 
 
@@ -288,10 +299,6 @@ public class A_Stern : MonoBehaviour {
 						ResearchFieldMarker.gameObject.SetActive(true);
 			if(!useDijkstra && !disVis.gameObject.activeSelf)
 				disVis.gameObject.SetActive(true);
-
-						OpenList.Clear ();
-						ClosedList.Clear ();
-						neigbours.Clear ();
 
 						OpenList.Add (0, new List<GridField> ());
 						OpenList [0].Add (start);
